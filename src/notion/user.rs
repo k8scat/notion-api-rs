@@ -1,6 +1,6 @@
 use super::client::Client;
 use serde::{Deserialize, Serialize};
-use anyhow::{Error, Result};
+use anyhow::Result;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ListUsersResponse {
@@ -32,7 +32,7 @@ pub struct Owner {
     #[serde(rename = "type")]
     pub owner_type: String,
     pub workspace: Option<bool>,
-    pub user: Option<User>,
+    pub user: Box<Option<User>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -56,6 +56,6 @@ impl Client {
     }
 
     pub async fn me(&self) -> Result<User> {
-        self.get_user(String::from("me"))
+        self.get_user(String::from("me")).await
     }
 }

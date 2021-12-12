@@ -37,8 +37,7 @@ impl Client {
     pub async fn get_page(&self, id: String) -> Result<Page> {
         let url = format!("{}/pages/{}", self.base_api, id);
         let resp = self.client.get(&url).send().await?;
-
-        let page: Page = response.json().await?;
+        let page = resp.json::<Page>().await?;
         Ok(page)
     }
 }

@@ -1,7 +1,6 @@
 use std::str::FromStr;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use anyhow::{Result, Error};
-use serde::Serialize;
 
 const API_V1: &str = "https://api.notion.com/v1";
 const NOTION_VERSION: &str = "2021-08-16";
