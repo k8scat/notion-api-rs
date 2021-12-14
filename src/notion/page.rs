@@ -34,10 +34,18 @@ pub struct Icon {
 }
 
 impl Client {
-    pub async fn get_page(&self, id: String) -> Result<Page> {
+    pub async fn retrieve_page(&self, id: String) -> Result<Page> {
         let url = format!("{}/pages/{}", self.base_api, id);
         let resp = self.client.get(&url).send().await?;
         let page = resp.json::<Page>().await?;
         Ok(page)
+    }
+
+    pub async fn create_page(&self) -> Result<()> {
+        Ok(())
+    }
+
+    pub async fn update_page(&self) -> Result<()> {
+        Ok(())
     }
 }

@@ -11,17 +11,19 @@ pub struct Client {
     pub base_api: String,
 }
 
-pub fn new(token: String) -> Result<Client> {
-    if token.is_empty() {
-        return Err(Error::msg("invalid token"));
+impl Client {
+    pub fn new(token: String) -> Result<Client> {
+        if token.is_empty() {
+            return Err(Error::msg("invalid token"));
+        }
+        let headers = HeaderMap::from_iter(vec![
+            (HeaderName::from_str("Authorization").unwrap(), HeaderValue::from_str(format!("Bearer {}", token).as_str()).unwrap()),
+            (HeaderName::from_str("Notion-Version").unwrap(), HeaderValue::from_str(NOTION_VERSION).unwrap()),
+        ]);
+        let client = reqwest::ClientBuilder::new().default_headers(headers).build().unwrap();
+        Ok(Client {
+            client,
+            base_api: API_V1.to_string(),
+        })
     }
-    let headers = HeaderMap::from_iter(vec![
-        (HeaderName::from_str("Authorization").unwrap(), HeaderValue::from_str(format!("Bearer {}", token).as_str()).unwrap()),
-        (HeaderName::from_str("Notion-Version").unwrap(), HeaderValue::from_str(NOTION_VERSION).unwrap()),
-    ]);
-    let client = reqwest::ClientBuilder::new().default_headers(headers).build().unwrap();
-    Ok(Client {
-        client,
-        base_api: API_V1.to_string(),
-    })
 }
